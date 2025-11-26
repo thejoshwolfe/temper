@@ -32,10 +32,9 @@ import sys
 
 # Non-standard modules
 try:
-  import serial
+  import serial as _
 except ImportError:
-  print('Cannot import "serial". Please sudo apt-get install python3-serial')
-  sys.exit(1)
+  print('WARNING: Cannot import "serial" for tty devices. Only hidraw devices will work. Please sudo apt-get install python3-serial', file=sys.stderr)
 
 
 class USBList(object):
@@ -279,6 +278,7 @@ class USBRead(object):
     A dictionary of device info (like that returned by USBList) combined with
     temperature and humidity info is returned.
     '''
+    import serial
 
     path = os.path.join('/dev', device)
     s = serial.Serial(path, 9600)
